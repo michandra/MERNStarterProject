@@ -6,6 +6,8 @@ const auth = require("../middlewares/jwt");
 var mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
 
+var noti = require("./NotificationController")
+
 // Book Schema
 function BookData(data) {
 	this.id = data._id;
@@ -26,6 +28,21 @@ exports.bookList = [
 		try {
 			Book.find({user: req.user._id},"_id title description isbn createdAt").then((books)=>{
 				if(books.length > 0){
+				//......
+					var key = "key=AAAALR7o9VI:APA91bGLjwDcs9CAKSYbAShd_hGn2BBGfViBSaqJPK5T3kZJNmrda-Y6dm-QdrpU7us9dpYgJVs7fFtcBCBK1o41XaplbyRLy8EzkY1qkkDZ4cpklnn0SZjdjpXYMc2p_CWpPBLsC945"
+                    var to = "cWO5I4WRh7c:APA91bEtBTi0BB8-77CSM057TS8yvBqlITemtJFhK_BNPAnuqVPkm_dh7uM-QBbhlv3XZCyYVlmwM3JNwjZRmYI70KO4-hCVPrrXVbszkAf4iCcJGPTAZuby5CSgHcBHAC5Ic01V_iui"
+					msg = {
+							  //"data": {
+								"notification": {
+									"title": "FCM Message demo",
+									"body": "This is an FCM Message demo",
+									"icon": "/ab-logo.png"
+								}
+							  //}
+							  }
+					noti.sendMessageToUser(key,to,msg)
+
+					//..................................................
 					return apiResponse.successResponseWithData(res, "Operation success", books);
 				}else{
 					return apiResponse.successResponseWithData(res, "Operation success", []);
@@ -106,6 +123,22 @@ exports.bookStore = [
 				book.save(function (err) {
 					if (err) { return apiResponse.ErrorResponse(res, err); }
 					let bookData = new BookData(book);
+					//......
+					var key = "key=AAAALR7o9VI:APA91bGLjwDcs9CAKSYbAShd_hGn2BBGfViBSaqJPK5T3kZJNmrda-Y6dm-QdrpU7us9dpYgJVs7fFtcBCBK1o41XaplbyRLy8EzkY1qkkDZ4cpklnn0SZjdjpXYMc2p_CWpPBLsC945"
+                    var to = "eSNqEPIT6Ug:APA91bGR5ckCw8rMi2KKlPyompAWEqH1S3byjAiaqlwofLitGzrx_L9Yl5kKqiSSeHWcSC73uWP33PsBTzadBpeNFiu5_XIQNNliJvKmKmlN7dU2gH_mqsnID_wG8juCYjqghNPz5dcK"
+
+					msg = {
+							  "data": {
+								"notification": {
+									"title": "FCM Message demo",
+									"body": "This is an FCM Message demo",
+									"icon": "/ab-logo.png"
+								}
+							  }
+							  }
+					noti.sendMessageToUser(key,to,msg)
+
+					//..................................................
 					return apiResponse.successResponseWithData(res,"Book add Success.", bookData);
 				});
 			}
